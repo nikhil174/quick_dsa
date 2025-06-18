@@ -39,6 +39,65 @@ map.put(1, "a");   // O(1) avg
 map.get(1);         // O(1) avg
 map.remove(1);      // O(1) avg
 map.containsKey(1); // O(1) avg
+
+HashMap<String, Integer> frequencyMap = new HashMap<>();
+// Adding elements (new and existing)
+frequencyMap.put("apple", frequencyMap.getOrDefault("apple", 0) + 1);
+frequencyMap.put("banana", frequencyMap.getOrDefault("banana", 0) + 1);
+frequencyMap.put("apple", frequencyMap.getOrDefault("apple", 0) + 1);
+
+// Checking frequency
+int appleFrequency = frequencyMap.getOrDefault("apple", 0);
+
+// Adding new element
+frequencyMap.put("orange", frequencyMap.getOrDefault("orange", 0) + 1);
+
+// Removing element
+if (frequencyMap.containsKey("apple")) {
+    frequencyMap.put("apple", frequencyMap.get("apple") - 1);
+    if (frequencyMap.get("apple") == 0) {
+        frequencyMap.remove("apple");
+    }
+}
+
+// Checking sizes
+int uniqueElementsCount = frequencyMap.size();
+int totalElementsCount = frequencyMap.values().stream().mapToInt(Integer::intValue).sum();
+
+// Checking existence
+boolean hasBanana = frequencyMap.containsKey("banana");
+boolean hasGrape = frequencyMap.containsKey("grape");
+
+// 1️⃣ forEach + Lambda (Best for readability - Java 8+)
+freqMap.forEach((key, value) -> 
+    System.out.println(key + " → " + value)
+);
+
+// 2️⃣ EntrySet for-loop (Classic & efficient)
+for (Map.Entry<String, Integer> entry : freqMap.entrySet()) {
+    System.out.println(entry.getKey() + " → " + entry.getValue());
+}
+
+// 3️⃣ Stream API (Modern filtering/sorting)
+freqMap.entrySet().stream()
+        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+        .forEach(entry -> 
+            System.out.println(entry.getKey() + " → " + entry.getValue())
+        );
+
+// 4️⃣ KeySet iteration (When you only need keys)
+for (String key : freqMap.keySet()) {
+    System.out.println(key + " → " + freqMap.get(key));
+}
+
+// 5️⃣ Iterator (Safe for removal during iteration)
+Iterator<Map.Entry<String, Integer>> it = freqMap.entrySet().iterator();
+while (it.hasNext()) {
+    Map.Entry<String, Integer> entry = it.next();
+    if (entry.getValue() < 4) {  // Example condition
+        it.remove();  // Safely remove low-frequency items
+    }
+}
 ```
 
 ## 5. TreeMap
